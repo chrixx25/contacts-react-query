@@ -14,7 +14,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import routes from "./routers";
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // import ListSubheader from '@mui/material/ListSubheader';
 import Collapse from '@mui/material/Collapse';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
@@ -144,8 +144,10 @@ const SideBar = () => {
                         </Fragment>
                     }
 
-                    return <Link key={index} to={path}>
+                    return (
                         <ListItemButton
+                            key={index}
+                            onClick={() => navigate(path)}
                             sx={{
                                 minHeight: 48,
                                 justifyContent: state.sidebarCollapsed ? 'initial' : 'center',
@@ -163,7 +165,7 @@ const SideBar = () => {
                             </ListItemIcon>
                             <ListItemText primary={name} sx={{ opacity: state.sidebarCollapsed ? 1 : 0 }} />
                         </ListItemButton>
-                    </Link>
+                    );
                 })}
             </List>
         </Drawer>

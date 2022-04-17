@@ -19,8 +19,6 @@ const EditContactModal = (props) => {
     const updateContact = useUpdateContact(id, meta);
     const contact = useGetContactById(id);
     const { showModal } = useModal();
-    const { enqueueSnackbar } = useSnackbar();
-
     const contactForm = useForm({
         shouldUnregister: true,
         defaultValues: defaultFormValues,
@@ -32,17 +30,8 @@ const EditContactModal = (props) => {
             message: `Are you sure to update ${values.firstName}?`,
             onConfirm: () => {
                 updateContact.mutate(values, {
-                    onSuccess: () => {
-                        onClose();
-                        //toast.success("Contact updated successfully!");
-                        enqueueSnackbar('Contact updated successfully!!', {
-                            variant: 'success',
-                            autoHideDuration: 3000,
-                        });
-                    },
-                    onSettled: () => {
-                        modal.hide();
-                    }
+                    onSuccess: () => onClose(),
+                    onSettled: () => modal.hide()
                 });
             }
         });
@@ -52,7 +41,7 @@ const EditContactModal = (props) => {
     useEffect(() => {
         // reset form with user data
         contactForm.reset(contact.data);
-    }, [contactForm, contact.data]);
+    }, [contact.data]);
 
     return (
         <Modal

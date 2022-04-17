@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
+import { useSnackbar } from 'notistack';
 import {
     addContact,
     updateContact,
@@ -7,9 +8,15 @@ import {
 
 export const useAddContact = () => {
     const queryClient = useQueryClient();
+    const { enqueueSnackbar } = useSnackbar();
 
     return useMutation(addContact, {
-        onSuccess: data => {
+        onSuccess: async data => {
+            enqueueSnackbar('Contact added successfully!!', {
+                variant: 'success',
+                autoHideDuration: 3000,
+            });
+
             /** Query Invalidation Start */
             queryClient.invalidateQueries('contacts');
 
@@ -25,9 +32,9 @@ export const useAddContact = () => {
 }
 
 export const useDeleteContact = () => {
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
     return useMutation(deleteContact, {
-        onSuccess: data => {
+        onSuccess: _data => {
             /** Query Invalidation Start */
             queryClient.invalidateQueries('contacts');
 
@@ -44,13 +51,16 @@ export const useDeleteContact = () => {
 
 export const useUpdateContact = (id, meta) => {
     const queryClient = useQueryClient()
-    //useMutation((passwords) => updateUserPassword({ ...passwords, id })
+    const { enqueueSnackbar } = useSnackbar();
     return useMutation((data) => updateContact(id, data), {
         onSuccess: data => {
+            enqueueSnackbar('Contact updated successfully!!', {
+                variant: 'success',
+                autoHideDuration: 3000,
+            });
             /** Query Invalidation Start */
             //queryClient.invalidateQueries('contacts');
             /** Handling Mutation Response Start */
-
             queryClient.setQueryData(['contacts', meta], oldContacts => {
                 const updatedContacts = oldContacts.results.map(oldContacts => oldContacts.id === id ? data : oldContacts);
                 oldContacts.results = updatedContacts

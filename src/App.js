@@ -13,6 +13,7 @@ import PublicRoute from 'components/Routes/PublicRoutes';
 import theme from "theme";
 import Login from 'screens/login';
 import Main from 'screens/main';
+import Users from 'screens/users';
 
 const App = () => {
   const queryClient = new QueryClient({
@@ -48,6 +49,10 @@ const App = () => {
                   <Route
                     path='/'
                     element={<PrivateRoute component={Main} />}
+                  />
+                  <Route
+                    path='/users'
+                    element={<PrivateRoute component={Users} />}
                   />
                 </Routes>
               </Router>
